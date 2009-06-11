@@ -27,6 +27,10 @@ my %names = (
 	"\n"	=> [undef, undef, undef, undef],
 	"al." => [undef, undef, "al.", undef],
 	"et. al." => [undef, undef, "et. al.", undef],
+	"O'Malley, A." => ["A.", undef, "O'Malley", undef],
+	"A. O'Malley" => ["A.", undef, "O'Malley", undef],
+	"Arthur O'Malley" => ["Arthur", undef, "O'Malley", undef],
+	"O'Malley, Arthur" => ["Arthur", undef, "O'Malley", undef],
 );
 
 plan tests => (keys(%names) * 6 + 5);

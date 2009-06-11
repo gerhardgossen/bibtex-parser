@@ -145,7 +145,7 @@ sub split {
 				return (undef, undef, $name, undef);
 			}
 		} else {
-			if ($name =~ /^((.*)\s+)?\b([\w-]+)$/) {;
+			if ($name =~ /^((.*)\s+)?\b([\w\-']+)$/) {;
 				return ($2, undef, $3, undef);
 			}
 		}
