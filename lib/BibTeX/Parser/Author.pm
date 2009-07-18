@@ -110,7 +110,7 @@ sub jr {
 =head2 split
 
 Split name into (firstname, von part, last name, jr part). Returns array
-with four strings, some of them possibliy empty.
+with four strings, some of them possibly empty.
 
 =cut
 
@@ -125,7 +125,7 @@ sub split {
 	if (@parts == 0) {
 		return (undef, undef, undef, undef);
 	} elsif (@parts == 1) {	# name without comma
-		if ( $name =~ /\b[[:lower:]]/) { # name has von part or has only lowercase names
+		if ( $name =~ /(^|\s)[[:lower:]]/) { # name has von part or has only lowercase names
 			my @name_parts = split /\s+/, $parts[0];
 
 			my $first;
@@ -145,7 +145,7 @@ sub split {
 				return (undef, undef, $name, undef);
 			}
 		} else {
-			if ($name =~ /^((.*)\s+)?\b([\w\-']+)$/) {;
+			if ($name =~ /^((.*)\s+)?\b(\S+)$/) {
 				return ($2, undef, $3, undef);
 			}
 		}

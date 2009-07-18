@@ -31,6 +31,10 @@ my %names = (
 	"A. O'Malley" => ["A.", undef, "O'Malley", undef],
 	"Arthur O'Malley" => ["Arthur", undef, "O'Malley", undef],
 	"O'Malley, Arthur" => ["Arthur", undef, "O'Malley", undef],
+	'L.M. M\"uller' => ["L.M.", undef, 'M\"uller', undef],
+	'M\"uller, L.M.' => ["L.M.", undef, 'M\"uller', undef],
+	'L.M. M"uller' => ["L.M.", undef, 'M"uller', undef],
+	'M"uller, L.M.' => ["L.M.", undef, 'M"uller', undef],
 );
 
 plan tests => (keys(%names) * 6 + 5);
