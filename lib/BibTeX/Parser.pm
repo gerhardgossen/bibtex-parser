@@ -113,8 +113,9 @@ sub _parse_next {
         if (/@($re_name)/cgo) {
 			my $type = uc $1;
             $current_entry->type( $type );
+            my $start_pos = pos($_) - length($type) - 1;
 
-			# read rest of entry (matches braces
+            # read rest of entry (matches braces)
             my $bracelevel = 0;
             $bracelevel += tr/\{/\{/;    #count braces
             $bracelevel -= tr/\}/\}/;
@@ -127,6 +128,12 @@ sub _parse_next {
                 $_ .= $line;
                 pos($_) = $position;
             }
+
+            # Remember raw bibtex code
+            my $raw = substr($_, $start_pos);
+            $raw =~ s/^\s+//;
+            $raw =~ s/\s+$//;
+            $current_entry->raw_bibtex($raw);
 
             my $pos = pos $_;
             tr/\n/ /;

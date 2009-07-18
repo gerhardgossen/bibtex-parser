@@ -53,6 +53,7 @@ sub new {
 	$fields{_type}     = uc($type);
 	$fields{_key}      = $key;
 	$fields{_parse_ok} = $parse_ok;
+        $fields{_raw}      = '';
 	return bless \%fields, $class;
 }
 
@@ -233,6 +234,22 @@ sub _sanitize_field {
 	}
 	return $value;
 }
+
+
+=head2 raw_bibtex
+
+Return raw BibTeX entry (if available).
+
+=cut
+
+sub raw_bibtex {
+	my $self = shift;
+	if (@_) {
+		$self->{_raw} = shift;
+	}
+	return $self->{_raw};
+}
+
 
 =head1 AUTHOR
 
