@@ -25,7 +25,16 @@ is_deeply(
     number    =>       1,
     pages     =>       1,
     year      =>       2008,
-    _parse_ok =>       1
+    _parse_ok =>       1,
+    _raw      =>       '@article{testkey,
+  year  = {2008},
+  title = "foo",
+  author = {A. Bar and L.M. M\"uller},
+  journal = {journal},
+  volume = {1},
+  number = {1},
+  pages = {1},
+}',
   },
   "parse \@ARTICLE"
 );

@@ -23,4 +23,15 @@ is_deeply($entry, {_type => 'ARTICLE', _key => 'Ahrenberg88',
     pages =>        "66--70",
     year =>         "1988",
     keywords =>     "conver",
-   _parse_ok => 1}, "parse \@ARTICLE");
+   _parse_ok => 1,
+   _raw => '@Article{Ahrenberg88,
+    author =       "L. Ahrenberg and A. Jonsson",
+    title =        "An interactive system for tagging dialogues",
+    journal =      "Literary \& Linguistic Computing",
+    volume =       "3",
+    number =       "2",
+    pages =        "66--70",
+    year =         "1988",
+    keywords =     "conver",
+}'
+   }, "parse \@ARTICLE");

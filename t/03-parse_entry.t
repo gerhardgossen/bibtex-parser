@@ -26,5 +26,6 @@ is_deeply($entry, {_type => 'ARTICLE', _key => 'lin1973', author => "Shen Lin an
    journal => "Operations Research",
    volume => 21,
    year => 1973,
-   pages => "498--516", _parse_ok => 1}, "parse \@ARTICLE");
+   pages => "498--516", _parse_ok => 1,
+   _raw => $string}, "parse \@ARTICLE");
 
