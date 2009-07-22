@@ -1,9 +1,7 @@
 package BibTeX::Parser;
-
+# ABSTRACT: A pure perl BibTeX parser
 use warnings;
 use strict;
-
-our $VERSION = '0.3';
 
 use BibTeX::Parser::Entry;
 
@@ -41,8 +39,8 @@ Parses BibTeX files.
 		    my @editors = $entry->editor;
 		    
 		    foreach my $author (@authors) {
-			    print $author->first . " " 
-			    	. $author->von . " " 
+			    print $author->first . " "
+			    	. $author->von . " "
 				. $author->last . ", "
 				. $author->jr;
 		    }

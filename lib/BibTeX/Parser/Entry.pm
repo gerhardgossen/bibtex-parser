@@ -3,8 +3,6 @@ package BibTeX::Parser::Entry;
 use warnings;
 use strict;
 
-our $VERSION = '0.3';
-
 use BibTeX::Parser::Author;
 
 =head1 NAME

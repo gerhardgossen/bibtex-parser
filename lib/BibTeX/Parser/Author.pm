@@ -3,8 +3,6 @@ package BibTeX::Parser::Author;
 use warnings;
 use strict;
 
-our $VERSION = '0.3';
-
 use overload
 	'""' => \&to_string;
 
