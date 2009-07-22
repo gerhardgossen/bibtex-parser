@@ -5,8 +5,6 @@ use strict;
 
 our $VERSION = '0.3';
 
-use Text::Balanced qw(extract_bracketed extract_delimited);
-
 use BibTeX::Parser::Entry;
 
 =for stopwords jr von
@@ -235,7 +233,7 @@ sub _parse_string {
         {    # quoted string with embeded escapes
             $value .= $1;
         } else {
-            my $part = ( extract_bracketed( $_, "{}" ) )[0];
+            my $part = _extract_bracketed( $_ );
             $value .= substr $part, 1, length($part) - 2;    # strip quotes
         }
 
@@ -245,6 +243,25 @@ sub _parse_string {
     }
     $value =~ s/[\s\n]+/ /g;
     return $value;
+}
+
+sub _extract_bracketed
+{
+	for($_[0]) # alias to $_
+	{
+		/\G\s+/cg;
+		my $start = pos($_);
+		my $depth = 0;
+		while(1)
+		{
+			/\G\\./cg && next;
+			/\G\{/cg && (++$depth, next);
+			/\G\}/cg && (--$depth > 0 ? next : last);
+			/\G([^\\\{\}]+)/cg && next; 
+			last; # end of string
+		}
+		return substr($_, $start, pos($_)-$start);
+	}
 }
 
 1;    # End of BibTeX::Parser
