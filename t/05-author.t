@@ -35,6 +35,7 @@ my %names = (
 	'M\"uller, L.M.' => ["L.M.", undef, 'M\"uller', undef],
 	'L.M. M"uller' => ["L.M.", undef, 'M"uller', undef],
 	'M"uller, L.M.' => ["L.M.", undef, 'M"uller', undef],
+	'van Beethoven, Ludwig' => ["Ludwig", "van", "Beethoven", undef ],
 	'{Barnes and Noble, Inc.}' => [undef, undef, 'Barnes and Noble, Inc.', undef],
 );
 

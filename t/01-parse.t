@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 use BibTeX::Parser;
 use IO::File;
@@ -23,6 +23,7 @@ if (defined $fh) {
 		is($entry->type, "ARTICLE", "type");
 		ok($entry->parse_ok, "parse_ok");
 		is($entry->field("year"), 1950, "field");
+		is($entry->field("month"), "January~1", "field");
 
 		my @authors = $entry->author;
 		is(scalar @authors, 2, "#authors");

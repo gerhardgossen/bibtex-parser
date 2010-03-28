@@ -1,6 +1,6 @@
 #!perl -wT
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 use strict;
 use IO::File;
@@ -33,6 +33,10 @@ $count++;
 
 while ($entry = $parser->next) {
 	$count++;
+        if ($count == 8) {
+            is( scalar $entry->author, 4, 'Last entry has 4 authors');
+        }
 }
+
 
 is($count, 8, "number of entries");
