@@ -1,5 +1,8 @@
 Revision history for BibTeX-Parser
 
+{{$NEXT}}
+        Do not attempt to clean up returned values
+
 0.4 	2010-02-09
 	Parsing of quoted author names (e.g. "{Foo and Bar, Inc.}")
 

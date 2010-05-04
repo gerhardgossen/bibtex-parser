@@ -132,7 +132,7 @@ sub field {
 		return $self->{ lc( $field ) };
 	} else {
 		my ($self, $key, $value) = @_;
-		$self->{ lc( $key ) } = _sanitize_field($value);
+		$self->{ lc( $key ) } = $value; #_sanitize_field($value);
 	}
 
 }
