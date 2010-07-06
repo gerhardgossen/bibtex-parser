@@ -1,4 +1,4 @@
-#!perl -T
+#!/usr/bin/perl
 
 use Test::More; 
 
@@ -37,7 +37,7 @@ my %names = (
 	'M"uller, L.M.' => ["L.M.", undef, 'M"uller', undef],
 	'van Beethoven, Ludwig' => ["Ludwig", "van", "Beethoven", undef ],
 	'{Barnes and Noble, Inc.}' => [undef, undef, 'Barnes and Noble, Inc.', undef],
-        "Ludwig {van Beethoven}" => ["Ludwig", undef, "van Beethoven", undef],
+        "Ludwigg {van Beethoven}" => ["Ludwigg", undef, "van Beethoven", undef],
 );
 
 plan tests => (keys(%names) * 6 + 5);

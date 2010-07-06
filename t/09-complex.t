@@ -17,7 +17,7 @@ my $entry = $parser->next;
 is_deeply($entry, {_type => 'ARTICLE', _key => 'Ahrenberg88',
     author =>       "L. Ahrenberg and A. Jonsson",
     title =>        "An interactive system for tagging dialogues",
-    journal =>      'Literary & Linguistic Computing',
+    journal =>      'Literary \& Linguistic Computing',
     volume =>       3,
     number =>       "2",
     pages =>        "66--70",

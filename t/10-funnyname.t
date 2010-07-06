@@ -18,7 +18,7 @@ is_deeply(
   {
     _type     =>       'ARTICLE',
     _key      =>       'testkey',
-    author    =>       "A. Bar and L.M. M\"uller",
+    author    =>       'A. Bar and L.M. M\"uller',
     title     =>       'foo',
     journal   =>       'journal',
     volume    =>       1,
@@ -50,7 +50,7 @@ ok(!$authors[0]->von, "A1 no 'von'");
 ok(!$authors[0]->jr, "A1 no 'jr'");
 
 is($authors[1]->first, 'L.M.', "A2 first name");
-is($authors[1]->last, 'M"uller', "A2 last name");
+is($authors[1]->last, 'M\"uller', "A2 last name");
 ok(!$authors[1]->von, "A2 no 'von'");
 ok(!$authors[1]->jr, "A2 no 'jr'");
 
