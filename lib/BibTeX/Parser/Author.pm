@@ -120,8 +120,8 @@ sub split {
         if ( $name =~ /\{/ ) {
             my @tokens;
             my $cur_token = '';
-            while ( scalar( $name =~ /\G \s* ( [^,\{]+? ) \s* ( , | \{ | $ ) /xgc ) ) {
-                $cur_token .= $1 . ' ';
+            while ( scalar( $name =~ /\G \s* ( [^,\{]*? ) \s* ( , | \{ | $ ) /xgc ) ) {
+                $cur_token .= $1 . ' ' if $1;
                 if ( $2 =~ /\{/ ) {
                     if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
                         $cur_token .= "{$1} ";
@@ -130,11 +130,11 @@ sub split {
                     }
                 } else {
                     $cur_token =~ s/\s*$//;
-                    push @tokens, $cur_token;
+                    push @tokens, $cur_token if $cur_token;
                     $cur_token = '';
                 }
             }
-            push @tokens, $cur_token;
+            push @tokens, $cur_token if $cur_token;
             return _get_single_author_from_tokens( @tokens );
         } else {
             my @tokens = split /\s*,\s*/, $name;
@@ -150,8 +150,8 @@ sub _split_name_parts {
         return split /\s+/, $name;
     } else {
         my @parts;
-        while ( scalar( $name =~ /\G ( [^\s\{]+ ) \s* ( \s+ | \{ | $ ) /xgc ) ) {
-            push @parts, $1;
+        while ( scalar( $name =~ /\G ( [^\s\{]* ) \s* ( \s+ | \{ | $ ) /xgc ) ) {
+            push @parts, $1 if $1;
             if ( $2 =~ /\{/ ) {
                 if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
                     push @parts, $1;
@@ -191,7 +191,7 @@ sub _get_single_author_from_tokens {
                 return (undef, undef, $tokens[0], undef);
             }
         } else {
-            if ($tokens[0] =~ /^((.*)\s+)?\b(\S+)$/) {
+            if ( $tokens[0] !~ /\{/ && $tokens[0] =~ /^((.*)\s+)?\b(\S+)$/) {
                 return ($2, undef, $3, undef);
             } else {
                 my @name_parts = _split_name_parts $tokens[0];
@@ -200,7 +200,7 @@ sub _get_single_author_from_tokens {
         }
 
     } elsif (@tokens == 2) {
-        my @von_last_parts = split /\s+/, $tokens[0];
+        my @von_last_parts = _split_name_parts $tokens[0];
         my $von;
         # von part are lowercase words
         while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {
@@ -208,7 +208,7 @@ sub _get_single_author_from_tokens {
         }
         return ($tokens[1], $von, join(" ", @von_last_parts), undef);
     } else {
-        my @von_last_parts = split /\s+/, $tokens[0];
+        my @von_last_parts = _split_name_parts $tokens[0];
         my $von;
         # von part are lowercase words
         while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {

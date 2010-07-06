@@ -38,6 +38,7 @@ my %names = (
 	'van Beethoven, Ludwig' => ["Ludwig", "van", "Beethoven", undef ],
 	'{Barnes and Noble, Inc.}' => [undef, undef, 'Barnes and Noble, Inc.', undef],
         "Ludwigg {van Beethoven}" => ["Ludwigg", undef, "van Beethoven", undef],
+	'{van Beethoven}, Ludwig' => ["Ludwig", undef, "van Beethoven", undef ],
 );
 
 plan tests => (keys(%names) * 6 + 5);
