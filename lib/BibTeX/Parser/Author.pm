@@ -117,53 +117,105 @@ sub split {
 	    return (undef, undef, $1, undef);
 	}
 
-	my @parts = split /\s*,\s*/, $name;
+        if ( $name =~ /\{/ ) {
+            my @tokens;
+            my $cur_token = '';
+            while ( scalar( $name =~ /\G \s* ( [^,\{]+? ) \s* ( , | \{ | $ ) /xgc ) ) {
+                $cur_token .= $1 . ' ';
+                if ( $2 =~ /\{/ ) {
+                    if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
+                        $cur_token .= "{$1} ";
+                    } else {
+                        die "Unmatched brace in name '$name'";
+                    }
+                } else {
+                    $cur_token =~ s/\s*$//;
+                    push @tokens, $cur_token;
+                    $cur_token = '';
+                }
+            }
+            push @tokens, $cur_token;
+            return _get_single_author_from_tokens( @tokens );
+        } else {
+            my @tokens = split /\s*,\s*/, $name;
 
-	if (@parts == 0) {
-		return (undef, undef, undef, undef);
-	} elsif (@parts == 1) {	# name without comma
-		if ( $name =~ /(^|\s)[[:lower:]]/) { # name has von part or has only lowercase names
-			my @name_parts = split /\s+/, $parts[0];
+            return _get_single_author_from_tokens( @tokens );
+        }
+}
 
-			my $first;
-			while (@name_parts && ucfirst($name_parts[0]) eq $name_parts[0] ) {
-				$first .= $first ? ' ' . shift @name_parts : shift @name_parts;
-			}
+sub _split_name_parts {
+    my $name = shift;
 
-			my $von;
-			# von part are lowercase words
-			while ( @name_parts && lc($name_parts[0]) eq $name_parts[0] ) {
-				$von .= $von ? ' ' . shift @name_parts : shift @name_parts;
-			}
+    if ( $name !~ /\{/ ) {
+        return split /\s+/, $name;
+    } else {
+        my @parts;
+        while ( scalar( $name =~ /\G ( [^\s\{]+ ) \s* ( \s+ | \{ | $ ) /xgc ) ) {
+            push @parts, $1;
+            if ( $2 =~ /\{/ ) {
+                if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
+                    push @parts, $1;
+                } else {
+                    die "Unmatched brace in name '$name'";
+                }
+            }
+        }
+        return @parts;
+    }
 
-			if (@name_parts) {
-				return ($first, $von, join(" ", @name_parts), undef);
-			} else {
-				return (undef, undef, $name, undef);
-			}
-		} else {
-			if ($name =~ /^((.*)\s+)?\b(\S+)$/) {
-				return ($2, undef, $3, undef);
-			}
-		}
+}
 
-	} elsif (@parts == 2) {
-		my @von_last_parts = split /\s+/, $parts[0];
-		my $von;
-		# von part are lowercase words
-		while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {
-			$von .= $von ? ' ' . shift @von_last_parts : shift @von_last_parts;
-		}
-		return ($parts[1], $von, join(" ", @von_last_parts), undef);
-	} else {
-		my @von_last_parts = split /\s+/, $parts[0];
-		my $von;
-		# von part are lowercase words
-		while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {
-			$von .= $von ? ' ' . shift @von_last_parts : shift @von_last_parts;
-		}
-		return ($parts[2], $von, join(" ", @von_last_parts), $parts[1]);
-	}
+
+sub _get_single_author_from_tokens {
+    my (@tokens) = @_;
+    if (@tokens == 0) {
+        return (undef, undef, undef, undef);
+    } elsif (@tokens == 1) {	# name without comma
+        if ( $tokens[0] =~ /(^|\s)[[:lower:]]/) { # name has von part or has only lowercase names
+            my @name_parts = _split_name_parts $tokens[0];
+
+            my $first;
+            while (@name_parts && ucfirst($name_parts[0]) eq $name_parts[0] ) {
+                $first .= $first ? ' ' . shift @name_parts : shift @name_parts;
+            }
+
+            my $von;
+            # von part are lowercase words
+            while ( @name_parts && lc($name_parts[0]) eq $name_parts[0] ) {
+                $von .= $von ? ' ' . shift @name_parts : shift @name_parts;
+            }
+
+            if (@name_parts) {
+                return ($first, $von, join(" ", @name_parts), undef);
+            } else {
+                return (undef, undef, $tokens[0], undef);
+            }
+        } else {
+            if ($tokens[0] =~ /^((.*)\s+)?\b(\S+)$/) {
+                return ($2, undef, $3, undef);
+            } else {
+                my @name_parts = _split_name_parts $tokens[0];
+                return ($name_parts[0], undef, $name_parts[1], undef);
+            }
+        }
+
+    } elsif (@tokens == 2) {
+        my @von_last_parts = split /\s+/, $tokens[0];
+        my $von;
+        # von part are lowercase words
+        while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {
+            $von .= $von ? ' ' . shift @von_last_parts : shift @von_last_parts;
+        }
+        return ($tokens[1], $von, join(" ", @von_last_parts), undef);
+    } else {
+        my @von_last_parts = split /\s+/, $tokens[0];
+        my $von;
+        # von part are lowercase words
+        while ( @von_last_parts && lc($von_last_parts[0]) eq $von_last_parts[0] ) {
+            $von .= $von ? ' ' . shift @von_last_parts : shift @von_last_parts;
+        }
+        return ($tokens[2], $von, join(" ", @von_last_parts), $tokens[1]);
+    }
 
 }
 
