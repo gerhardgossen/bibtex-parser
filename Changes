@@ -1,7 +1,10 @@
 Revision history for BibTeX-Parser
 
 {{$NEXT}}
+
+0.5       2010-07-06 13:17:45 Europe/Berlin
         Do not attempt to clean up returned values
+        Author names with braces are split correctly
 
 0.4 	2010-02-09
 	Parsing of quoted author names (e.g. "{Foo and Bar, Inc.}")
