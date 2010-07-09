@@ -1,4 +1,4 @@
-#!perl -T
+#!/usr/bin/perl -w
 
 use Test::More skip_all => "Performance test", tests => 1;
 
