@@ -137,6 +137,22 @@ sub field {
 
 }
 
+use LaTeX::ToUnicode qw( convert );
+
+=head2 cleaned_field($name)
+
+Retrieve the contents of a field in a format that is cleaned of TeX markup.
+
+=cut
+
+sub cleaned_field {
+        my ( $self, $field, @options ) = @_;
+        use Data::Dumper;
+        return convert( $self->field( lc $field ), @options ); # TODO: do not remove braces from author fields
+}
+
+no LaTeX::ToUnicode;
+
 sub _handle_author_editor {
 	my $type = shift;
 	my $self = shift;
