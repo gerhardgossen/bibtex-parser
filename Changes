@@ -2,8 +2,11 @@ Revision history for BibTeX-Parser
 
 {{$NEXT}}
 
+0.61    2010-07-19 16:37:49
+        Add methods $entry->cleaned_author / cleaned_editor
+
 0.6     2010-07-19 14:43:15
-        Add methode $entry->cleaned_field( 'name' )
+        Add method $entry->cleaned_field( 'name' )
         Add prerequisite LaTeX::ToUnicode >= 0.02
 
 0.5       2010-07-06 13:17:45 Europe/Berlin
