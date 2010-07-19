@@ -10,26 +10,46 @@ use BibTeX::Parser::Entry;
 sub new_entry {
     BibTeX::Parser::Entry->new( 'ARTICLE', 'Foo2010', 1, { @_ } );
 }
+{
+    my @german_tests = (
+        [ '"a' => 'ä' ],
+        ['"`' => '„' ],
+        ["\"'" => '“' ],
+    );
 
-my @german_tests = (
-    [ '"a' => 'ä' ],
-    ['"`' => '„' ],
-    ["\"'" => '“' ],
-);
-
-foreach my $test ( @german_tests ) {
-    my $entry = new_entry( foo => $test->[0] );
-    is( $entry->cleaned_field( 'foo', german => 1 ), $test->[1], "Convert $test->[0], german => 1" );
+    foreach my $test ( @german_tests ) {
+        my $entry = new_entry( foo => $test->[0] );
+        is( $entry->cleaned_field( 'foo', german => 1 ), $test->[1], "Convert $test->[0], german => 1" );
+    }
 }
 
-binmode( DATA, ':utf8' );
-while (<DATA>) {
-    chomp;
-    my ( $tex, $result ) = split /\t/;
-    is( new_entry( foo => $tex )->cleaned_field( 'foo' ), $result, "Convert $tex" );
+{
+    binmode( DATA, ':utf8' );
+    while (<DATA>) {
+        chomp;
+        my ( $tex, $result ) = split /\t/;
+        is( new_entry( foo => $tex )->cleaned_field( 'foo' ), $result, "Convert $tex" );
+    }
+    close DATA;
 }
-close DATA;
 
+{
+    my $entry_with_authors = new_entry( author => 'F{\"o}o Bar and B"ar, F.' );
+    my @authors = $entry_with_authors->author;
+    is( scalar @authors, 2, "Number of authors is correct");
+    is( $authors[0]->first, 'F{\"o}o', "non-cleaned version of first" );
+    is( $authors[0]->last, 'Bar', "non-cleaned version of last" );
+
+    is( $authors[1]->first, 'F.', "non-cleaned version of first" );
+    is( $authors[1]->last, 'B"ar', "non-cleaned version of last" );
+
+    my @clean_authors = $entry_with_authors->cleaned_author;
+    is( $clean_authors[0]->first, 'Föo', "cleaned version of first" );
+    is( $clean_authors[0]->last, 'Bar', "cleaned version of last" );
+
+    is( $clean_authors[1]->first, 'F.', "cleaned version of first" );
+    is( $clean_authors[1]->last, 'B"ar', "cleaned version of last" );
+}
 done_testing;
 
 __DATA__

@@ -120,11 +120,11 @@ sub split {
         if ( $name =~ /\{/ ) {
             my @tokens;
             my $cur_token = '';
-            while ( scalar( $name =~ /\G \s* ( [^,\{]*? ) \s* ( , | \{ | $ ) /xgc ) ) {
-                $cur_token .= $1 . ' ' if $1;
+            while ( scalar( $name =~ /\G \s* ( [^,\{]*? ) ( \s* , \s* | \{ | \s* $ ) /xgc ) ) {
+                $cur_token .= $1 if $1;
                 if ( $2 =~ /\{/ ) {
                     if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
-                        $cur_token .= "{$1} ";
+                        $cur_token .= "{$1}";
                     } else {
                         die "Unmatched brace in name '$name'";
                     }
@@ -150,14 +150,21 @@ sub _split_name_parts {
         return split /\s+/, $name;
     } else {
         my @parts;
-        while ( scalar( $name =~ /\G ( [^\s\{]* ) \s* ( \s+ | \{ | $ ) /xgc ) ) {
-            push @parts, $1 if $1;
+        my $cur_token = '';
+        while ( scalar( $name =~ /\G ( [^\s\{]* ) ( \s+ | \{ | \s* $ ) /xgc ) ) {
+            $cur_token .= $1;
             if ( $2 =~ /\{/ ) {
                 if ( scalar( $name =~ /\G([^\}]*)\}/gc ) ) {
-                    push @parts, $1;
+                    $cur_token .= "{$1}";
                 } else {
                     die "Unmatched brace in name '$name'";
                 }
+            } else {
+                if ( $cur_token =~ /^{(.*)}$/ ) {
+                    $cur_token = $1;
+                }
+                push @parts, $cur_token;
+                $cur_token = '';
             }
         }
         return @parts;
