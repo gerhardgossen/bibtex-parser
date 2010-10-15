@@ -2,6 +2,9 @@ Revision history for BibTeX-Parser
 
 {{$NEXT}}
 
+0.62    2010-10-15 08:52:53
+        Declare Test::More minimum version with done_testing
+
 0.61    2010-07-19 16:37:49
         Add methods $entry->cleaned_author / cleaned_editor
 
