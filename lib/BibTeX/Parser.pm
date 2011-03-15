@@ -152,7 +152,7 @@ sub _parse_next {
                 $current_entry->parse_ok(1);
 
 				# parse key
-                if (/\G\s*\{(?:\s*($re_name),[\s\n]*|\s+\r?\s*)/cgo) {
+                if (/\G\s*\{(?:\s*($re_name)\s*,[\s\n]*|\s+\r?\s*)/cgo) {
                     $current_entry->key($1);
 
 					# fields
