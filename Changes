@@ -2,6 +2,9 @@ Revision history for BibTeX-Parser
 
 {{$NEXT}}
 
+0.63    2011-03-15 23:08:18
+	Parse files with errors (no keys, spaces in wrong positions). Bug #66325
+
 0.62    2010-10-15 08:52:53
         Declare Test::More minimum version with done_testing
 
