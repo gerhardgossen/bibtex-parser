@@ -263,3 +263,19 @@ sub _extract_bracketed
 }
 
 1;    # End of BibTeX::Parser
+
+=head2 SEE ALSO
+
+=over 4
+
+=item 
+
+L<BibTeX::Parser::Entry>
+
+=item 
+
+L<BibTeX::Parser::Author>
+
+=back
+
+=cut
