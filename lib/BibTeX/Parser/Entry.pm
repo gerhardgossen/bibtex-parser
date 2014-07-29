@@ -230,38 +230,16 @@ sub _handle_author_editor {
 # Split an author field into different author names.
 # Handles quoted names ({name}).
 sub _split_author_field {
-    my $field = shift;
+  my $field = shift;
 
-    return () if !defined $field || $field eq '';
+  return () if !defined $field || $field eq '';
 
-    my @names;
+  my @names;
 
-    my $buffer;
-    while (!defined pos $field || pos $field < length $field) {
-	if ( $field =~ /\G ( .*? ) ( \{ | \s+ and \s+ )/xcgi ) {
-	    my $match = $1;
-	    if ( $2 =~ /and/i ) {
-		$buffer .= $match;
-		push @names, $buffer;
-		$buffer = "";
-	    } elsif ( $2 =~ /\{/ ) {
-		$buffer .= $match . "{";
-		if ( $field =~ /\G (.* \})/cgx ) {
-		    $buffer .= $1;
-		} else {
-		    die "Missing closing brace at " . substr( $field, pos $field, 10 );
-		}
-	    } else {
-		$buffer .= $match;
-	    }
-	} else {
-	   #print "# $field " . (pos ($field) || 0) . "\n";
-	   $buffer .= substr $field, (pos $field || 0);
-	   last;
-	}
-    }
-    push @names, $buffer if $buffer;
-    return @names;
+  my $buffer;
+
+  my @authors = split /\sand(?![^{]*})\s/i, $field;
+  return @authors;
 }
 
 =head2 author([@authors])
