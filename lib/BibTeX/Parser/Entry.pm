@@ -234,10 +234,6 @@ sub _split_author_field {
 
   return () if !defined $field || $field eq '';
 
-  my @names;
-
-  my $buffer;
-
   my @authors = split /\sand(?![^{]*})\s/i, $field;
   return @authors;
 }
