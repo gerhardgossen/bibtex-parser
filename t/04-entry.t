@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 13;
+use Test::More tests => 14;
 
 use BibTeX::Parser::Entry;
 
@@ -40,3 +40,11 @@ ok($entry->has("title"), "Entry::has true on known value");
 ok($entry->has("year"), "Entry::has true on known value");
 
 ok( ! $entry->has("pages"), "Entry::has false on unknown value");
+
+# check the author splitting code.
+my @authors = BibTeX::Parser::Entry::_split_author_field("{Securities and Exchange Commission (SEC)} and {Barnes' and Noble} and Th{\\'{e}}venaz, Jacques");
+is_deeply(\@authors, [
+  "{Securities and Exchange Commission (SEC)}",
+  "{Barnes' and Noble}",
+  "Th{\\'{e}}venaz, Jacques"
+], "Entry::_split_author_field returns correct number of authors");
